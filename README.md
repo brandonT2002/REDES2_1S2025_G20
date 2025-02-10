@@ -15,4 +15,4 @@
 </div>
 <br>
 <div> 🏛 Universidad San Carlos de Guatemala</div>
-<div> 📆 Segundo Semestre 2024</div>
+<div> 📆 Primer Semestre 2025</div>
