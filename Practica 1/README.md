@@ -354,21 +354,28 @@ Router# show ip route
 El **Escenario 2 (Rapid PVST)** es la mejor opción debido a su tiempo de convergencia instantáneo (0 segundos), lo que lo hace ideal para redes que requieren alta disponibilidad, eficiencia y una experiencia de usuario sin interrupciones. Además, al ser una versión mejorada de PVST, ofrece mayor robustez y adaptabilidad en entornos de red modernos. Por estas razones, se recomienda implementar el **Escenario 2** como la propuesta final
 
 
-## **5️⃣ Anexos** 
+## **📷 Anexos** 
 
 <figure>
   <img src="img/Primaria.png" alt="Texto alternativo de la imagen">
   <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Primaria</code> después de la caída de un enlace entre Swithc 6 y Swithc 4.</figcaption>
 </figure>
 <br>
+<br>
+
 <figure>
   <img src="img/Basicos.png" alt="Texto alternativo de la imagen">
-  <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Basicos</code> después de la caída de un enlace entre Swithc 4 y Swithc 9.</figcaption>
+  <figcaption>Figura 2: Gráfico que muestra el tiempo de convergencia de la red <code>Basicos</code> después de la caída de un enlace entre Swithc 4 y Swithc 9.</figcaption>
 </figure>
 <br>
+<br>
+
 <figure>
   <img src="img/Diversificado.png" alt="Texto alternativo de la imagen">
-  <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Diversificado</code> después de la caída de un enlace entre Swithc 5 y Swithc 9.</figcaption>
+  <figcaption>Figura 3: Gráfico que muestra el tiempo de convergencia de la red <code>Diversificado</code> después de la caída de un enlace entre Swithc 5 y Swithc 9.</figcaption>
 </figure>
+
+<br>
+<br>
 
 **Nota:** La demostración de los tiempos de convergencia para la configuración Rapid-PVST (Rapid Per-VLAN Spanning Tree) no incluye una figura gráfica debido a la inmediatez del proceso de convergencia. Rapid-PVST está diseñado para alcanzar un estado estable en tiempos extremadamente cortos, lo que hace que su representación visual resulte innecesaria o poco significativa en este contexto.
