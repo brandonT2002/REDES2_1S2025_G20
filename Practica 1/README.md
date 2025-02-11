@@ -20,7 +20,7 @@ El colegio **Alma Mater** necesita optimizar su red, ya que ha perdido el contro
 
 ## **2️⃣ Topología de Red**  
 ### **🖥️ 2.1 Diagrama de Red**  
-_(Adjuntar imagen con la topología diseñada en Packet Tracer, incluyendo nombres de dispositivos, conexiones y VLANs.)_  
+![alt text](img/topologia.png)
 
 ### **📌 2.2 Equipos utilizados**  
 | Dispositivo | Modelo | Cantidad |  
@@ -72,16 +72,16 @@ Cada subred tiene un esquema de direccionamiento basado en VLANs:
 
 | Dispositivo | Direccion IP | Mascara de Red | VLAN | Default Gateway |
 | ----------- | ------------ | -------------- | -------------- | --------------- |
-| PC1 | 192.168.12.X | 255.255.255.0 | 17 | 192.168.12.1 |
-| PC2 | 192.168.12.X | 255.255.255.0 | 17 | 192.168.12.1 |
-| PC3 | 192.168.52.X | 255.255.255.0 | 17 | 192.168.52.1 |
-| PC4 | 192.168.32.X | 255.255.255.0 | 27 | 192.168.32.1 |
-| PC5 | 192.168.32.X | 255.255.255.0 | 17 | 192.168.32.1 |
-| PC6 | 192.168.42.X | 255.255.255.0 | 17 | 192.168.42.1 |
-| PC7 | 192.168.42.X | 255.255.255.0 | 17 | 192.168.42.1 |
-| PC8 | 192.168.52.X | 255.255.255.0 | 17 | 192.168.52.1 |
-| LAPTOP1 | 192.168.22.X | 255.255.255.0 | 37 | 192.168.22.1 |
-| LAPTOP2 | 192.168.62.X | 255.255.255.0 | 37 | 192.168.62.1 |
+| PC1 | 192.168.12.10 | 255.255.255.0 | 12 | 192.168.12.1 |
+| PC2 | 192.168.12.20 | 255.255.255.0 | 12 | 192.168.12.1 |
+| PC3 | 192.168.52.10 | 255.255.255.0 | 52 | 192.168.52.1 |
+| PC4 | 192.168.32.10 | 255.255.255.0 | 32 | 192.168.32.1 |
+| PC5 | 192.168.32.20 | 255.255.255.0 | 32 | 192.168.32.1 |
+| PC6 | 192.168.42.10 | 255.255.255.0 | 42 | 192.168.42.1 |
+| PC7 | 192.168.42.20 | 255.255.255.0 | 42 | 192.168.42.1 |
+| PC8 | 192.168.52.20 | 255.255.255.0 | 52 | 192.168.52.1 |
+| LAPTOP1 | 192.168.22.10 | 255.255.255.0 | 22 | 192.168.22.1 |
+| LAPTOP2 | 192.168.62.10 | 255.255.255.0 | 62 | 192.168.62.1 |
 
 ## **3️⃣ Configuración de Dispositivos**  
 ### **🔧 3.1 Configuración de Switches**  
@@ -90,23 +90,23 @@ Cada subred tiene un esquema de direccionamiento basado en VLANs:
 Switch> enable  
 Switch# configure terminal  
 Switch(config)# hostname SW1_G20  
-Switch(config)# enable secret redes2grupo#B  
+Switch(config)# enable secret redes2grupo20  
 ```  
 
-#### **🔀 3.1.2 Configuración de VLANs**  
-```plaintext  
-Switch(config)# vlan 12  
-Switch(config-vlan)# name Primaria10  
-Switch(config)# vlan 22 
-Switch(config-vlan)# name Basicos20  
-...  
-```  
-
-#### **📡 3.1.3 Configuración de VTP**  
+#### **📡 3.1.2 Configuración de VTP**  
 ```plaintext  
 Switch(config)# vtp domain g20  
-Switch(config)# vtp mode server  
-Switch(config)# vtp password secureVTP  
+Switch(config)# vtp mode <server | client> 
+```  
+
+
+#### **🔀 3.1.3 Configuración de VLANs**  
+```plaintext  
+Switch(config)# vlan 12  
+Switch(config-vlan)# name Primaria12  
+Switch(config)# vlan 22 
+Switch(config-vlan)# name Basicos22  
+...  
 ```  
 
 #### **🔌 3.1.4 Configuración de Trunking**  
@@ -116,39 +116,58 @@ Switch(config-if)# switchport mode trunk
 Switch(config-if)# switchport trunk allowed vlan 12,22,32,42,52,62  
 ```  
 
-#### **🔐 3.1.5 Configuración de Port Security**  
+#### **🔌 3.1.4 Desactivar el protocolo DTP de los puertos troncales**  
+```plaintext  
+Switch(config)# interface fa0/1  
+Switch(config)# switchport nonegotiate
+```  
+
+
+#### **🔐 3.1.5 Configuración de Port Security y Acces mode**  
 ```plaintext  
 Switch(config)# interface fa0/10  
 Switch(config-if)# switchport mode access  
 Switch(config-if)# switchport port-security  
 Switch(config-if)# switchport port-security mac-address sticky  
 Switch(config-if)# switchport port-security maximum 1  
-Switch(config-if)# switchport port-security violation shutdown  
+Switch(config-if)# switchport port-security violation shutdown
+Switch(config-if)# switchport port-security mac-address <MAC> 
 ```  
 
 ### **🔄 3.2 Configuración de STP (Spanning Tree Protocol)**  
 #### **🌳 3.2.1 Configuración de PVST**  
 ```plaintext  
 Switch(config)# spanning-tree mode pvst  
-Switch(config)# spanning-tree vlan 12 priority 24576  
 ```  
 
 #### **⚡ 3.2.2 Configuración de Rapid PVST**  
 ```plaintext  
 Switch(config)# spanning-tree mode rapid-pvst  
-Switch(config)# spanning-tree vlan 42 priority 24576  
 ```  
 
 ### **🚦 3.3 Configuración de Enrutamiento Dinámico**  
 
+- Cálculo de Direcciones IP para Configuración de Protocolos de Enrutamiento
+  - Numero de Grupo: **20**
+
+| Protocolo | Fórmula de Cálculo de IP          | Resultado |
+|-----------|----------------------------------|-------------------|
+| OSPF      | `10.0.(1 + 20).0/24`         | `10.0.21.0/24`     |
+| RIP       | `10.0.(2 + 20).0/24`         | `10.0.22.0/24`     |
+| EIGRP     | `10.0.(3 + 20).0/24`         | `10.0.23.0/24`     |
+
+
 #### 📡 Router 0
 
+**Habilitar configuración**
 ```
-interface GigabitEthernet0/0
- ip address 10.0.21.1 255.255.255.0
- no shutdown
- exit
+enable
+configure terminal
+```
 
+**Configuración de subinterfaces VLAN**
+
+```
 interface GigabitEthernet0/1
  no ip address
  no shutdown
@@ -168,116 +187,115 @@ interface GigabitEthernet0/1.32
  encapsulation dot1Q 32
  ip address 192.168.32.1 255.255.255.0
  exit
+```
 
-router ospf 50
- log-adjacency-changes
- redistribute rip metric 10 subnets
+**Configuración de interfaz de red principal**
+
+```
+interface GigabitEthernet0/0
+ ip address 10.0.21.1 255.255.255.0
+ no shutdown
+ exit
+```
+
+**Configuración del protocolo OSPF**
+```
+router ospf 1
  network 10.0.21.0 0.0.0.255 area 0
  network 192.168.12.0 0.0.0.255 area 0
  network 192.168.22.0 0.0.0.255 area 0
  network 192.168.32.0 0.0.0.255 area 0
+ redistribute rip subnets
  exit
-
-router rip
- version 2
- network 10.0.0.0
- exit
-
-write memory
 ```
+
 
 #### 📡 Router1
 
+
+**Configuración de interfaces**
 ```
-enable
-configure terminal
+interface GigabitEthernet0/1
+ ip address 10.0.22.1 255.255.255.0
+ no shutdown
+ exit
 
 interface GigabitEthernet0/0
  ip address 10.0.21.2 255.255.255.0
  no shutdown
- duplex auto
- speed auto
  exit
+```
 
-interface GigabitEthernet0/1
- ip address 10.0.22.1 255.255.255.0
- no shutdown
- duplex auto
- speed auto
- exit
-
-router ospf 50
- log-adjacency-changes
+**Configuración del protocolo OSPF**
+```
+router ospf 1
  network 10.0.21.0 0.0.0.255 area 0
- distance 125
+ redistribute rip subnets
  exit
+```
 
+**Configuración del protocolo RIP**
+```
 router rip
  version 2
- redistribute ospf 50 metric 2
- network 10.0.0.0
- no auto-summary
+ network 10.0.22.0
+ redistribute ospf 1 metric 5
  exit
-
-write memory
 ```
 
 
 #### 📡 Router 2
 
+**Configuración de interfaces**
 ```
-enable
-configure terminal
+interface GigabitEthernet0/1
+ ip address 10.0.22.2 255.255.255.0
+ no shutdown
+ exit
 
 interface GigabitEthernet0/0
  ip address 10.0.23.1 255.255.255.0
  no shutdown
- duplex auto
- speed auto
  exit
+```
 
-interface GigabitEthernet0/1
- ip address 10.0.22.2 255.255.255.0
- no shutdown
- duplex auto
- speed auto
- exit
-
-router eigrp 10
- network 10.0.23.0 0.0.0.255
- exit
-
+**Configuración del protocolo RIP**
+```
 router rip
  version 2
+ network 10.0.22.0
  redistribute eigrp 10 metric 5
- network 10.0.0.0
  no auto-summary
  exit
+```
 
-write memory
+**Configuración del protocolo EIGRP**
+```
+router eigrp 10
+ network 10.0.23.0 0.0.0.255
+ redistribute rip metric 100000 10 255 1 1500
+ exit
 ```
 
 
 #### 📡 Router 3
 
-```
-enable
-configure terminal
 
+**Configuración de interfaces**
+```
 interface GigabitEthernet0/0
  ip address 10.0.23.2 255.255.255.0
  no shutdown
- duplex auto
- speed auto
  exit
 
 interface GigabitEthernet0/1
- no ip address
  no shutdown
- duplex auto
- speed auto
  exit
+```
 
+**Configuración de subinterfaces VLAN**
+
+```
 interface GigabitEthernet0/1.42
  encapsulation dot1Q 42
  ip address 192.168.42.1 255.255.255.0
@@ -295,23 +313,21 @@ interface GigabitEthernet0/1.62
  ip address 192.168.62.1 255.255.255.0
  no shutdown
  exit
-
-router eigrp 10
- redistribute rip metric 2560 0 255 255 1500
- network 10.0.23.0 0.0.0.255
- network 192.168.42.0
- network 192.168.52.0
- network 192.168.62.0
- exit
-
-router rip
- version 2
- network 10.0.0.0
- no auto-summary
- exit
-
-write memory
 ```
+
+**Configuración del protocolo EIGRP**
+```
+router eigrp 10
+ network 10.0.23.0 0.0.0.255
+ network 192.168.42.0 0.0.0.255
+ network 192.168.52.0 0.0.0.255
+ network 192.168.62.0 0.0.0.255
+ redistribute rip metric 100000 10 255 1 1500
+ exit
+```
+
+
+---
 
 ## **4️⃣ Pruebas y Validación**  
 ### **🖧 4.1 Verificación de Conectividad**  
@@ -330,7 +346,29 @@ Router# show ip route
 ```  
 
 ## **5️⃣ Resultados**  
-| Escenario | Protocolo Spanning-Tree | Red Primaria | Red Básicos | Red Diversificado |  
-|---|---|---|---|---|  
-| 1 | PVST |  |  |  |  
-| 2 | Rapid PVST |  |  |  |  
+| Escenario | Protocolo Spanning-Tree | Red Primaria | Red Básicos | Red Diversificado |
+|-----------|-------------------------|--------------|------------|-------------------|
+| 1         | PVST                    | 1min y 3seg       | 33 seg      | 55 seg            |
+| 2         | Rapid PVST               | 0 seg       | 0 seg      | 0 seg            |
+
+El **Escenario 2 (Rapid PVST)** es la mejor opción debido a su tiempo de convergencia instantáneo (0 segundos), lo que lo hace ideal para redes que requieren alta disponibilidad, eficiencia y una experiencia de usuario sin interrupciones. Además, al ser una versión mejorada de PVST, ofrece mayor robustez y adaptabilidad en entornos de red modernos. Por estas razones, se recomienda implementar el **Escenario 2** como la propuesta final
+
+
+## **5️⃣ Anexos** 
+
+<figure>
+  <img src="img/Primaria.png" alt="Texto alternativo de la imagen">
+  <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Primaria</code> después de la caída de un enlace entre Swithc 6 y Swithc 4.</figcaption>
+</figure>
+<br>
+<figure>
+  <img src="img/Basicos.png" alt="Texto alternativo de la imagen">
+  <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Basicos</code> después de la caída de un enlace entre Swithc 4 y Swithc 9.</figcaption>
+</figure>
+<br>
+<figure>
+  <img src="img/Diversificado.png" alt="Texto alternativo de la imagen">
+  <figcaption>Figura 1: Gráfico que muestra el tiempo de convergencia de la red <code>Diversificado</code> después de la caída de un enlace entre Swithc 5 y Swithc 9.</figcaption>
+</figure>
+
+**Nota:** La demostración de los tiempos de convergencia para la configuración Rapid-PVST (Rapid Per-VLAN Spanning Tree) no incluye una figura gráfica debido a la inmediatez del proceso de convergencia. Rapid-PVST está diseñado para alcanzar un estado estable en tiempos extremadamente cortos, lo que hace que su representación visual resulte innecesaria o poco significativa en este contexto.
