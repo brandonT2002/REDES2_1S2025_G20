@@ -17,3 +17,112 @@
 |5|10.0.20.128/27|10.0.20.129 - 10.0.20.158|10.0.20.159|255.255.255.224|
 |6|10.0.20.160/27|10.0.20.161 - 10.0.20.190|10.0.20.191|255.255.255.224|
 |7|10.0.20.192/27|10.0.20.193 - 10.0.20.222|10.0.20.223|255.255.255.224|
+
+## Modos Troncales
+
+* SW4
+```sh
+enable
+configure terminal
+interface range f0/1-6
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+exit
+wr
+```
+
+* SW5, SW6
+```sh
+enable
+configure terminal
+interface range f0/1-4
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+exit
+wr
+```
+
+* S2, S3
+```sh
+enable
+configure terminal
+interface f0/1
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+exit
+wr
+```
+
+## Modo Cliente
+* S2 - S3, SW5 - SW6
+```sh
+enable
+configure terminal
+vtp mode client
+vtp domain g20
+vtp password usac
+exit
+wr
+show vtp status
+```
+
+#### Modo Servidor
+* SW4
+```sh
+enable
+configure terminal
+vtp mode server
+vtp domain g20
+vtp password usac
+vtp version 2
+exit
+wr
+show vtp status
+```
+
+#### Modo Acceso
+* S2
+```sh
+enable
+configure terminal
+interface range fa0/10-11
+switchport mode access
+switchport Access vlan 6
+exit
+exit
+wr
+show interface status
+```
+
+* S3
+```sh
+enable
+configure terminal
+interface range fa0/10-11
+switchport mode access
+switchport Access vlan 5
+exit
+exit
+wr
+show interface status
+```
+
+### VLAN
+```sh
+enable
+configure terminal
+vlan 5
+name VLAN_Naranja_EdificioDER_20
+exit
+vlan 6
+name VLAN_Verde_EdificioDER_20
+exit
+exit
+wr
+show vlan
+```
