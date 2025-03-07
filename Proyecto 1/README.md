@@ -123,6 +123,24 @@ router eigrp 1
  network 10.0.20.160 0.0.0.31
  auto-summary
  exit
+
+
+! Configuracion OSPF
+router ospf 1
+    network 10.0.20.0 0.0.0.31 area 0
+    network 10.0.20.32 0.0.0.31 area 0
+    network 10.0.20.64 0.0.0.31 area 0
+    network 10.0.20.96 0.0.0.31 area 0
+    network 10.0.20.128 0.0.0.31 area 0
+    network 10.0.20.160 0.0.0.31 area 0
+    network 10.0.20.192 0.0.0.31 area 0
+    network 192.168.20.0 0.0.0.31 area 0
+    network 192.168.20.32 0.0.0.31 area 0
+    network 192.168.20.64 0.0.0.31 area 0
+    network 192.168.20.96 0.0.0.31 area 0
+    network 192.168.20.128 0.0.0.31 area 0
+exit
+
 ```
 
 ### SW3
@@ -329,4 +347,127 @@ interface range FastEthernet0/10 - 11
  switchport access vlan 3
  switchport mode access
  exit
+
+```
+
+## Switch 13
+```bash
+interface GigabitEthernet1/1/1
+ no switchport
+ ip address 10.0.20.1 255.255.255.224
+ no shutdown
+exit
+
+interface GigabitEthernet1/1/2
+ no switchport
+ ip address 10.0.20.98 255.255.255.224
+ no shutdown
+exit
+
+
+! Configuracion OSPF
+router ospf 1
+    network 10.0.20.0 0.0.0.31 area 0
+    network 10.0.20.32 0.0.0.31 area 0
+    network 10.0.20.64 0.0.0.31 area 0
+    network 10.0.20.96 0.0.0.31 area 0
+    network 10.0.20.128 0.0.0.31 area 0
+    network 10.0.20.160 0.0.0.31 area 0
+    network 10.0.20.192 0.0.0.31 area 0
+    network 192.168.20.0 0.0.0.31 area 0
+    network 192.168.20.32 0.0.0.31 area 0
+    network 192.168.20.64 0.0.0.31 area 0
+    network 192.168.20.96 0.0.0.31 area 0
+    network 192.168.20.128 0.0.0.31 area 0
+exit
+```
+
+### Switch 12 
+```bash
+interface GigabitEthernet1/1/1
+ no switchport
+ ip address 10.0.20.34 255.255.255.224
+ no shutdown
+exit
+
+
+interface GigabitEthernet1/1/2
+ no switchport
+ ip address 10.0.20.65 255.255.255.224
+ no shutdown
+exit
+
+
+! Configuracion OSPF
+router ospf 1
+    network 10.0.20.0 0.0.0.31 area 0
+    network 10.0.20.32 0.0.0.31 area 0
+    network 10.0.20.64 0.0.0.31 area 0
+    network 10.0.20.96 0.0.0.31 area 0
+    network 10.0.20.128 0.0.0.31 area 0
+    network 10.0.20.160 0.0.0.31 area 0
+    network 10.0.20.192 0.0.0.31 area 0
+    network 192.168.20.0 0.0.0.31 area 0
+    network 192.168.20.32 0.0.0.31 area 0
+    network 192.168.20.64 0.0.0.31 area 0
+    network 192.168.20.96 0.0.0.31 area 0
+    network 192.168.20.128 0.0.0.31 area 0
+exit
+
+! Configuracion DHCP ADMIN
+interface vlan 4
+ ip address 192.168.20.65 255.255.255.224
+ ip helper-address 10.0.20.225  
+ no shutdown
+
+ip dhcp pool Admin
+network 192.168.20.64 255.255.255.224
+default-router 192.168.20.65
+dns-server 192.168.20.66
+ip dhcp excluded-address 192.168.20.65 192.168.20.94
+
+
+interface gig1/0/1
+sw mode access 
+sw access vlan 4
+
+```
+
+### Switch 11
+``` bash
+interface GigabitEthernet1/1/1
+ no switchport
+ ip address 10.0.20.97 255.255.255.224
+ no shutdown
+exit
+
+
+interface GigabitEthernet1/1/2
+ no switchport
+ ip address 10.0.20.66 255.255.255.224
+ no shutdown
+exit
+
+interface GigabitEthernet1/1/3
+ no switchport
+ ip address 10.0.20.130 255.255.255.224
+ no shutdown
+exit
+
+
+! Configuracion OSPF
+router ospf 1
+    network 10.0.20.0 0.0.0.31 area 0
+    network 10.0.20.32 0.0.0.31 area 0
+    network 10.0.20.64 0.0.0.31 area 0
+    network 10.0.20.96 0.0.0.31 area 0
+    network 10.0.20.128 0.0.0.31 area 0
+    network 10.0.20.160 0.0.0.31 area 0
+    network 10.0.20.192 0.0.0.31 area 0
+    network 192.168.20.0 0.0.0.31 area 0
+    network 192.168.20.32 0.0.0.31 area 0
+    network 192.168.20.64 0.0.0.31 area 0
+    network 192.168.20.96 0.0.0.31 area 0
+    network 192.168.20.128 0.0.0.31 area 0
+exit
 ```
