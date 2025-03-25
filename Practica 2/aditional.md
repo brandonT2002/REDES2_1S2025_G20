@@ -181,3 +181,64 @@ exit
 interface fa0/2
  switchport mode trunk
 exit
+
+
+
+---
+*Nuevas Configuraciones para el hsrp*
+### ROUTER 1 VLAN 22
+
+en
+conf t
+interface g0/1.12
+encapsulation dot1q 12
+ip add 192.168.20.2 255.255.255.192
+standby 1 ip 192.168.20.1
+standby 1 priority 150
+standby 1 preempt
+
+### ROUTER 1 VLAN 22
+
+en
+conf t
+interface g0/1.22
+encapsulation dot1q 22
+ip add 192.168.20.194 255.255.255.240
+standby 2 ip 192.168.20.193
+standby 2 priority 150
+standby 2 preempt
+
+
+
+### ROUTER 2 VLAN 22
+
+en
+conf t
+interface g0/1.12
+encapsulation dot1q 12
+ip add 192.168.20.3 255.255.255.192
+standby 1 ip 192.168.20.1
+
+### ROUTER 2 VLAN 22
+en
+conf t
+interface g0/1.22
+encapsulation dot1q 22
+ip add 192.168.20.195 255.255.255.240
+standby 2 ip 192.168.20.193
+
+
+### ROUTER 1 OSPF
+
+router ospf 1
+network 10.0.20.16 0.0.0.3 area 0
+network 192.168.20.192 0.0.0.15 area 0
+network 192.168.20.0 0.0.0.63 area 0
+
+
+### ROUTER 2 OSPF
+
+router ospf 1
+network 10.0.20.12 0.0.0.3 area 0
+network 192.168.20.192 0.0.0.15 area 0
+network 192.168.20.0 0.0.0.63 area 0
