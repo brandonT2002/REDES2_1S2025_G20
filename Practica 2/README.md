@@ -59,7 +59,7 @@ Se configuran las siguientes VLANs según el número de grupo:
 | DHCP_SERVERS| 40 + (2+0) |  42  |
 
 Configuración en Switch:
-```plaintext
+```bash
 Switch(config)# vlan 12
 Switch(config-vlan)# name ADMIN
 Switch(config-vlan)# exit
@@ -102,7 +102,7 @@ Switch(config-vlan)# exit
 Para conectar edificios con 4 enlaces LACP (configurar el lacp antes de agregar las ips):
 
 #### 📡 Switches Multicapa
-```plaintext
+```bash
 Switch(config)# interface range fa0/1-4
 Switch(config-if-range)# channel-protocol lacp
 Switch(config-if-range)# channel-group <ID Grupo> mode active
@@ -117,7 +117,7 @@ Switch(config-if)# ip add 10.0.0.1 255.255.255.252
 ## 🌍 **Configuración DNS y HTTP**
 
 El servidor web debe responder al dominio:
-```plaintext
+```bash
 www.practica2_GrupoX.com
 ```
 
@@ -126,30 +126,56 @@ www.practica2_GrupoX.com
 ## 🔄 **Configuraciones de Protocolo de Capa 3**
 
 #### 🧩 Multilayer Switch0
-```plaintext
+```bash
 Router(config)# router ospf 1
 Router(config-router)# network 10.0.20.0 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.20 0.0.0.3 area 0
 ```
 
 #### 🧩 Multilayer Switch1
-```plaintext
+```bash
 Router(config)# router ospf 1
 Router(config-router)# network 10.0.20.0 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.4 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.8 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.12 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.16 0.0.0.3 area 0
+
+
+Switch(config)# vlan 12
+Switch(config-vlan)# name ADMIN
+Switch(config)# vlan 22
+Switch(config-vlan)# name ESTUDIANTES
+
+Switch(config)# interface vlan 12
+Switch(config-if)# ip address 192.168.20.193 255.255.255.240
+Switch(config-if)# no shutdown
+
+Switch(config)# interface vlan 22
+Switch(config-if)# ip address 192.168.20.1 255.255.255.192
+Switch(config-if)# no shutdown
+
 ```
 
 #### 🧩 Multilayer Switch2
-```plaintext
+```bash
+
+Switch(config)# vlan 12
+Switch(config-vlan)# name ADMIN
+Switch(config)# vlan 22
+Switch(config-vlan)# name ESTUDIANTES
+
 Router(config)# router ospf 1
 Router(config-router)# network 10.0.20.4 0.0.0.3 area 0
+Router(config-router)# network 192.168.100.0 0.0.0.127 area 0
+Router(config-router)# network 192.168.100.128 0.0.0.127 area 0
+Router(config-router)# network 192.168.20.0 0.0.0.63 area 0
+
+
 ```
 
 #### 🧩 Multilayer Switch3
-```plaintext
+```bash
 Router(config)# router ospf 1
 Router(config-router)# network 10.0.20.8 0.0.0.3 area 0
 Router(config-router)# network 10.0.20.24 0.0.0.3 area 0
@@ -160,7 +186,7 @@ Router(config-router)# network 10.0.20.24 0.0.0.3 area 0
 
 ## 🔄 **Configuración VRRP (HSRP en Cisco)**
 
-```plaintext
+```bash
 Router(config)# interface 
 Router(config-if)# standby 1 ip 
 Router(config-if)# standby 1 priority 110
