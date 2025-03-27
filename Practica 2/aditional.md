@@ -62,16 +62,6 @@ router ospf 1
 exit
 
 
-ip dhcp pool VLAN_Admin
- network 192.168.20.192 255.255.255.240
- default-router 192.168.20.193
-exit
-
-ip dhcp pool VLAN_Estudiantes
- network 192.168.20.0 255.255.255.192
- default-router 192.168.20.1
-exit
-
 # Router 1
 
 enable
