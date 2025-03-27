@@ -202,12 +202,26 @@ Router(config-if)# standby 1 preempt
 | 2    | PISO_2_G20  | WPA2       | G20_PISO2    |
 | 3    | PISO_3_G20  | WPA2       | G20_PISO3    |
 
+### DHCP para Rowters WiFi
+
+|Descripción|Piso2|Piso3|
+|-|-|-|
+|IP Address|10.0.20.22|10.0.20.26|
+|Dirección de Router|192.168.20.65|192.168.20.129|
+|Máscara de Subred|255.255.255.192|255.255.255.192|
+|Rango DHCP|192.168.20.66 - 125|192.168.20.129 - 188|
+|DNS|192.168.100.2|192.168.100.2|
+
 ---
 
 ## 📷 **Capturas**
 
 <div align="center">
-    <img src="<!-- URL de los reportes -->" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/img1.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/img2.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/img3.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/img4.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/img5.png" alt="Ejemplo de reporte" width="70%">
 </div>
 
 
