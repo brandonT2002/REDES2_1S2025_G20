@@ -80,7 +80,7 @@ interface g0/1.12
  ip address 192.168.20.194 255.255.255.240
  ip helper-address 192.168.100.130
  standby 1 ip 192.168.20.193
- standby 1 priority 110
+ standby 1 priority 150
  standby 1 preempt
 exit
 
@@ -89,7 +89,7 @@ interface g0/1.22
  ip address 192.168.20.2 255.255.255.192
  ip helper-address 192.168.100.130
  standby 2 ip 192.168.20.1
- standby 2 priority 110
+ standby 2 priority 150
  standby 2 preempt
 exit
 
