@@ -236,6 +236,10 @@ www.practica2_Grupo20.com
     <br/>
     <span>Configuración del DNS</span>
     <br/>
+     <img src="./img/image7.png" alt="Ejemplo de reporte" width="70%">
+    <br/>
+    <span>Configuración de http</span>
+    <br/>
     <img src="./img/image3.png" alt="Ejemplo de reporte" width="70%">
     <br/>
     <span>Configuración del index en http</span>
