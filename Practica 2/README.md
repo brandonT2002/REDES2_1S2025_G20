@@ -228,7 +228,7 @@ Switch(config-if)# ip add 10.0.0.10 255.255.255.252
 
 El servidor web debe responder al dominio:
 ```bash
-www.practica2_GrupoX.com
+www.practica2_Grupo20.com
 ```
 
 <div align="center">
@@ -243,7 +243,8 @@ www.practica2_GrupoX.com
 </div>
 
 > [!NOTE]  
-> Página web estática
+> **Página web estática**
+>
 > [👁 Ver](https://github.com/brandonT2002/REDES2_1S2025_G20/blob/main/Practica%202/src/index.html)
 
 
@@ -383,6 +384,7 @@ standby 2 ip 192.168.20.1
     <img src="./img/img3.png" alt="Ejemplo de reporte" width="70%">
     <img src="./img/img4.png" alt="Ejemplo de reporte" width="70%">
     <img src="./img/img5.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/pagina.png" alt="Ejemplo de reporte" width="70%">
 </div>
 
 
