@@ -13,13 +13,13 @@
 <p align="center">
   <a href="https://go-skill-icons.vercel.app/">
     <img
-      src="https://go-skill-icons.vercel.app/api/icons?i=git,github,html"
+      src="https://go-skill-icons.vercel.app/api/icons?i=git,github,html,css"
     />
   </a>
 </p>
 
 - **Cisco Packet Tracer** (Simulación de Red)
-- **HTML** (Página Estática)
+- **HTML y CSS3** (Página Estática)
 - **GitHub** (Control de Versiones)
 
 ---
@@ -39,7 +39,7 @@ La Facultad de Ingeniería de la USAC está en proceso de modernización de su r
 ---
 
 
-## 📊 **Topología Propuesta**
+## 📊 **Topología**
 
 <div align="center">
     <img src="img/practica2.png" alt="Topología de la Red" width="85%">
@@ -58,13 +58,40 @@ Se configuran las siguientes VLANs según el número de grupo:
 | WEB_SERVERS | 30 + (2+0) |  32  |
 | DHCP_SERVERS| 40 + (2+0) |  42  |
 
-Configuración en Switch:
+Configuración de vlans en los Switch:
 ```bash
 Switch(config)# vlan 12
 Switch(config-vlan)# name ADMIN
 Switch(config-vlan)# exit
+
+Switch(config)# vlan 22
+Switch(config-vlan)# name ESTUDIANTES
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 32
+Switch(config-vlan)# WEB_SERVERS
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 42
+Switch(config-vlan)# name DHCP_SERVERS
+Switch(config-vlan)# exit
 ```
 
+Configuracion Trunk y Access
+```
+interface FastEthernet0/1
+switchport mode trunk
+switchport trunk allowed vlan 32,42
+
+interface Fa0/10
+switchport mode access
+switchport access vlan 32
+
+interface Fa0/11
+switchport mode access
+switchport access vlan 42
+
+```
 ---
 
 ## 📊 **Asignación de Direcciones IP y Subredes**
@@ -101,25 +128,130 @@ Switch(config-vlan)# exit
 
 Para conectar edificios con 4 enlaces LACP (configurar el lacp antes de agregar las ips):
 
-#### 📡 Switches Multicapa
+#### 📡 Multilayer Switch0
 ```bash
 Switch(config)# interface range fa0/1-4
 Switch(config-if-range)# channel-protocol lacp
-Switch(config-if-range)# channel-group <ID Grupo> mode active
+Switch(config-if-range)# channel-group 1 mode active
 
 Switch(config)# int port-channel 1
 Switch(config-if)# no sw
 Switch(config-if)# ip add 10.0.0.1 255.255.255.252
 ```
 
+#### 📡 Multilayer Switch1
+```bash
+Switch(config)# interface range fa0/1-4
+Switch(config-if-range)# channel-protocol lacp
+Switch(config-if-range)# channel-group 1 mode active
+
+Switch(config)# int port-channel 1
+Switch(config-if)# no sw
+Switch(config-if)# ip add 10.0.0.2 255.255.255.252
+
+##############
+
+Switch(config)# interface range fa0/9-12
+Switch(config-if-range)# channel-protocol lacp
+Switch(config-if-range)# channel-group 2 mode active
+
+Switch(config)# int port-channel 2
+Switch(config-if)# no sw
+Switch(config-if)# ip add 10.0.0.5 255.255.255.252
+
+##############
+
+Switch(config)# interface range fa0/5-8
+Switch(config-if-range)# channel-protocol lacp
+Switch(config-if-range)# channel-group 3 mode active
+
+Switch(config)# int port-channel 3
+Switch(config-if)# no sw
+Switch(config-if)# ip add 10.0.0.9 255.255.255.252
+
+```
+
+#### 📡 Multilayer Switch2
+```bash
+Switch(config)# interface range fa0/1-4
+Switch(config-if-range)# channel-protocol lacp
+Switch(config-if-range)# channel-group 2 mode active
+
+Switch(config)# int port-channel 2
+Switch(config-if)# no sw
+Switch(config-if)# ip add 10.0.0.6 255.255.255.252
+```
+
+#### 📡 Multilayer Switch3
+```bash
+Switch(config)# interface range fa0/1-4
+Switch(config-if-range)# channel-protocol lacp
+Switch(config-if-range)# channel-group 3 mode active
+
+Switch(config)# int port-channel 3
+Switch(config-if)# no sw
+Switch(config-if)# ip add 10.0.0.10 255.255.255.252
+```
+
+---
+
+## 🌍 **Configuración DHCP**
+
+### 🖥️ Conexión cableada
+#### 🧩 Vlan Admin
+
+<div align="center">
+    <img src="./img/image.png" alt="Ejemplo de reporte" width="70%">
+</div>
+
+#### 🧩 Vlan Estudiantes
+
+<div align="center">
+    <img src="./img/image2.png" alt="Ejemplo de reporte" width="70%">
+</div>
+
+### 🛜 Conexión Wireless
+#### 🧩 Router 0
+
+<div align="center">
+    <img src="./img/image5.png" alt="Ejemplo de reporte" width="70%">
+</div>
+
+#### 🧩 Router 1
+
+<div align="center">
+ <img src="./img/image6.png" alt="Ejemplo de reporte" width="70%">
+</div>
 ---
 
 ## 🌍 **Configuración DNS y HTTP**
 
 El servidor web debe responder al dominio:
 ```bash
-www.practica2_GrupoX.com
+www.practica2_Grupo20.com
 ```
+
+<div align="center">
+    <img src="./img/image4.png" alt="Ejemplo de reporte" width="70%">
+    <br/>
+    <span>Configuración del DNS</span>
+    <br/>
+     <img src="./img/image7.png" alt="Ejemplo de reporte" width="70%">
+    <br/>
+    <span>Configuración de http</span>
+    <br/>
+    <img src="./img/image3.png" alt="Ejemplo de reporte" width="70%">
+    <br/>
+    <span>Configuración del index en http</span>
+    <br/>
+</div>
+
+> [!NOTE]  
+> **Página web estática**
+>
+> [👁 Ver](https://github.com/brandonT2002/REDES2_1S2025_G20/blob/main/Practica%202/src/index.html)
+
+
 
 ---
 
@@ -127,19 +259,19 @@ www.practica2_GrupoX.com
 
 #### 🧩 Multilayer Switch0
 ```bash
-Router(config)# router ospf 1
-Router(config-router)# network 10.0.20.0 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.20 0.0.0.3 area 0
+Switch(config)# router ospf 1
+Switch(config-router)# network 10.0.20.0 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.20 0.0.0.3 area 0
 ```
 
 #### 🧩 Multilayer Switch1
 ```bash
-Router(config)# router ospf 1
-Router(config-router)# network 10.0.20.0 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.4 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.8 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.12 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.16 0.0.0.3 area 0
+Switch(config)# router ospf 1
+Switch(config-router)# network 10.0.20.0 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.4 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.8 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.12 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.16 0.0.0.3 area 0
 
 
 Switch(config)# vlan 12
@@ -159,39 +291,73 @@ Switch(config-if)# no shutdown
 
 #### 🧩 Multilayer Switch2
 ```bash
-
-Switch(config)# vlan 12
-Switch(config-vlan)# name ADMIN
-Switch(config)# vlan 22
-Switch(config-vlan)# name ESTUDIANTES
-
-Router(config)# router ospf 1
-Router(config-router)# network 10.0.20.4 0.0.0.3 area 0
-Router(config-router)# network 192.168.100.0 0.0.0.127 area 0
-Router(config-router)# network 192.168.100.128 0.0.0.127 area 0
-Router(config-router)# network 192.168.20.0 0.0.0.63 area 0
-
-
+Switch(config)# router ospf 1
+Switch(config-router)# network 10.0.20.4 0.0.0.3 area 0
+Switch(config-router)# network 192.168.100.0 0.0.0.127 area 0
+Switch(config-router)# network 192.168.100.128 0.0.0.127 area 0
+Switch(config-router)# network 192.168.20.0 0.0.0.63 area 0
 ```
 
 #### 🧩 Multilayer Switch3
 ```bash
-Router(config)# router ospf 1
-Router(config-router)# network 10.0.20.8 0.0.0.3 area 0
-Router(config-router)# network 10.0.20.24 0.0.0.3 area 0
+Switch(config)# router ospf 1
+Switch(config-router)# network 10.0.20.8 0.0.0.3 area 0
+Switch(config-router)# network 10.0.20.24 0.0.0.3 area 0
 ```
 
 ---
 
 
-## 🔄 **Configuración VRRP (HSRP en Cisco)**
-
-```bash
-Router(config)# interface 
-Router(config-if)# standby 1 ip 
-Router(config-if)# standby 1 priority 110
-Router(config-if)# standby 1 preempt
+## 🔄 **Configuración HSRP**
+#### 🧩 ROUTER 1 VLAN 12
 ```
+en
+conf t
+interface g0/1.12
+encapsulation dot1Q 12
+ip address 192.168.20.194 255.255.255.240
+ip helper-address 192.168.100.130
+standby 1 ip 192.168.20.193
+standby 1 priority 150
+standby 1 preempt
+```
+
+#### 🧩 ROUTER 1 VLAN 22
+```
+en
+conf t
+interface g0/1.22
+encapsulation dot1Q 22
+ip address 192.168.20.2 255.255.255.192
+ip helper-address 192.168.100.130
+standby 2 ip 192.168.20.1
+standby 2 priority 150
+standby 2 preempt
+```
+
+
+#### 🧩 ROUTER 2 VLAN 12
+```
+en
+conf t
+interface g0/1.12
+encapsulation dot1Q 12
+ip address 192.168.20.195 255.255.255.240
+ip helper-address 192.168.100.130
+standby 1 ip 192.168.20.193
+```
+
+#### 🧩 ROUTER 2 VLAN 22
+```
+en
+conf t
+interface g0/1.22
+encapsulation dot1Q 22
+ip address 192.168.20.3 255.255.255.192
+ip helper-address 192.168.100.130
+standby 2 ip 192.168.20.1
+```
+
 
 ---
 
@@ -202,7 +368,7 @@ Router(config-if)# standby 1 preempt
 | 2    | PISO_2_G20  | WPA2       | G20_PISO2    |
 | 3    | PISO_3_G20  | WPA2       | G20_PISO3    |
 
-### DHCP para Rowters WiFi
+### DHCP para Routers WiFi
 
 |Descripción|Piso2|Piso3|
 |-|-|-|
@@ -222,6 +388,7 @@ Router(config-if)# standby 1 preempt
     <img src="./img/img3.png" alt="Ejemplo de reporte" width="70%">
     <img src="./img/img4.png" alt="Ejemplo de reporte" width="70%">
     <img src="./img/img5.png" alt="Ejemplo de reporte" width="70%">
+    <img src="./img/pagina.png" alt="Ejemplo de reporte" width="70%">
 </div>
 
 
