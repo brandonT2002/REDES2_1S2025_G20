@@ -102,12 +102,12 @@ interface GigabitEthernet 1/0/24
 router bgp 300
  bgp log-neighbor-changes
  no synchronization
- redistribute ospf 20
  neighbor 172.20.0.1 remote-as 100
  neighbor 172.20.0.9 remote-as 200
  network 172.20.0.0 mask 255.255.255.252
  network 172.20.0.8 mask 255.255.255.252
  network 192.168.32.68 mask 255.255.255.252 
+redistribute ospf 20
  exit
 
 router ospf 20
@@ -157,7 +157,6 @@ interface GigabitEthernet 1/1/2
  no shutdown
  exit
 
-
 router bgp 200
  bgp log-neighbor-changes
  no synchronization
@@ -165,9 +164,21 @@ router bgp 200
  neighbor 172.20.0.10 remote-as 300
  network 172.20.0.0 mask 255.255.255.252
  network 172.20.0.8 mask 255.255.255.252
- network 192.168.32.68 mask 255.255.255.252
+ network 192.168.22.128 mask 255.255.255.252
+ redistribute eigrp 4
 
 
+router eigrp 4    
+redistribute bgp 200 metric 10000 100 255 1 1500
+network 192.168.22.128 0.0.0.3
+no auto-summary   
+exit
+
+interface Gi1/0/7
+no switchport
+ip address 192.168.22.130 255.255.255.252
+no sh
+exit
 
 ```
 
@@ -284,6 +295,7 @@ Subnetting:
 ||2|192.168.22.116|192.168.22.117|192.168.22.118|192.168.22.119|255.255.255.252/30|
 ||2|192.168.22.120|192.168.22.121|192.168.22.122|192.168.22.123|255.255.255.252/30|
 ||2|192.168.22.124|192.168.22.125|192.168.22.126|192.168.22.127|255.255.255.252/30|
+||2|192.168.22.128|192.168.22.129|192.168.22.130|192.168.22.131|255.255.255.252/30|
 
 Enrutamiento
 Interfaces
@@ -344,6 +356,14 @@ no shutdown
 exit
 exit
 wr
+
+
+interface Gi1/0/7
+no switchport
+ip address 192.168.22.129 255.255.255.252
+no sh
+exit
+
 ```
 
 * SW2
@@ -475,6 +495,7 @@ ip routing
 router eigrp 4
 network 192.168.22.96 0.0.0.3
 network 192.168.22.100 0.0.0.3
+network 192.168.22.128 0.0.0.3
 exit
 exit
 wr
@@ -650,7 +671,7 @@ enable
 configure terminal
 interface vlan 15
 ip address 192.168.22.1 255.255.255.240
-# ip helper-address [IP_DHCPSERVER]
+ip helper-address 192.168.12.38
 no shutdown
 exit
 exit
@@ -663,7 +684,7 @@ enable
 configure terminal
 interface vlan 16
 ip address 192.168.22.33 255.255.255.240
-# ip helper-address [IP_DHCPSERVER]
+ip helper-address 192.168.12.38
 no shutdown
 exit
 exit
@@ -676,7 +697,7 @@ enable
 configure terminal
 interface vlan 16
 ip address 192.168.22.49 255.255.255.240
-# ip helper-address [IP_DHCPSERVER]
+ip helper-address 192.168.12.38
 no shutdown
 exit
 exit
@@ -689,7 +710,7 @@ enable
 configure terminal
 interface vlan 15
 ip address 192.168.22.17 255.255.255.240
-# ip helper-address [IP_DHCPSERVER]
+ip helper-address 192.168.12.38
 no shutdown
 exit
 exit
