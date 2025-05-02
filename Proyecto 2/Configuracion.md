@@ -674,6 +674,7 @@ ip address 192.168.22.1 255.255.255.240
 ip helper-address 192.168.12.38
 no shutdown
 exit
+
 exit
 wr
 ```
