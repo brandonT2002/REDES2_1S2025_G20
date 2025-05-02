@@ -191,21 +191,23 @@ ip helper-address 192.168.12.38
 no sh
 exit
 
+interface fastethernet 2/0
+ip address 192.168.12.25 255.255.255.248
+ip helper-address 192.168.12.38
+ip access-group BLOQUEO_HACIA_ADMIN out
+no sh
+exit
+
 interface fastethernet 3/0
 ip address 192.168.12.9 255.255.255.248
 ip helper-address 192.168.12.38
+ip access-group BLOQUEO_HACIA_ADMIN out
 no sh
 exit
 
 
 interface fastethernet 4/0
 ip address 192.168.12.17 255.255.255.248
-ip helper-address 192.168.12.38
-no sh
-exit
-
-interface fastethernet 2/0
-ip address 192.168.12.25 255.255.255.248
 ip helper-address 192.168.12.38
 no sh
 exit
@@ -233,6 +235,26 @@ no auto-summary
 exit
 
 
+ip access-list extended BLOQUEO_HACIA_ADMIN
+ remark Permitir ping desde Administración a otras redes
+ permit icmp 192.168.12.8 0.0.0.7 any echo
+ permit icmp 192.168.12.24 0.0.0.7 any echo
+
+ remark Permitir respuestas de ping hacia Administración
+ permit icmp any 192.168.12.8 0.0.0.7 echo-reply
+ permit icmp any 192.168.12.24 0.0.0.7 echo-reply
+
+ remark Permitir ping entre subredes de Administración
+ permit icmp 192.168.12.8 0.0.0.7 192.168.12.24 0.0.0.7
+ permit icmp 192.168.12.24 0.0.0.7 192.168.12.8 0.0.0.7
+
+ remark Bloquear ping desde otras redes
+ deny icmp any 192.168.12.8 0.0.0.7
+ deny icmp any 192.168.12.24 0.0.0.7
+
+ remark Permitir todo lo demás
+ permit ip any any
+           
 
 
 
